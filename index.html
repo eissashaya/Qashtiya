@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qashtiya | قشطيه</title>
+    <!-- استيراد الخط العربي -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- مكتبة الأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* إعدادات عامة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth; /* ✅ تفعيل التمرير السلس للنقر على الروابط */
+        }
+
+        body {
+            background-color: #f2e5db;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        /* حاوية التطبيق الرئيسية */
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #ffffff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border-radius: 24px;
+            position: relative;
+        }
+
+        /* === قسم صورة الغلاف === */
+        .hero-section {
+            position: relative;
+            height: 260px;
+            background-image: url('image/1.jpeg'); 
+            background-size: cover;
+            background-position: center;
+        }
+
+        .user-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 44px;
+            height: 44px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #6b4e3e;
+            font-size: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            cursor: pointer;
+        }
+
+        /* === قسم معلومات المتجر === */
+        .store-info {
+            background-color: #fbf3ef;
+            padding: 20px 20px 0 20px;
+            text-align: center;
+            position: relative;
+            padding-top: 55px;
+            margin-top: -30px;
+            z-index: 10;
+            border-radius: 24px 24px 0 0;
+        }
+
+        .logo-container {
+            width: 85px;
+            height: 85px;
+            background: #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            top: -42px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 4px solid #fbf3ef;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .store-info h1 {
+            font-size: 22px;
+            color: #4a3428;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 25px;
+            font-size: 22px;
+            color: #6b4e3e;
+        }
+
+        .social-links a {
+            color: #6b4e3e;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        
+        .social-links a:hover {
+            transform: scale(1.1);
+            color: #4a3428;
+        }
+
+        /* ✅ قسم الأصناف (مثبت في الأعلى دائماً) */
+        .categories-wrapper {
+            background-color: #fbf3ef;
+            padding: 0 15px 20px 15px;
+            position: sticky; /* تثبيت القسم عند التمرير */
+            top: 0; /* يلتصق بأعلى الشاشة */
+            z-index: 50; /* يظهر فوق باقي العناصر */
+            border-bottom: 1px solid #e0d1c5; /* حدود سفلية خفيفة */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .categories-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding-bottom: 5px;
+            scrollbar-width: none;
+        }
+        .categories-scroll::-webkit-scrollbar { display: none; }
+
+        .category-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 85px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            text-decoration: none; /* إزالة التسطير من الرابط */
+        }
+        .category-item:hover {
+            transform: scale(1.05);
+        }
+
+        .category-item .circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid transparent;
+            padding: 2px;
+            margin-bottom: 8px;
+            transition: border-color 0.3s;
+        }
+
+        /* ✅ الدائرة النشطة */
+        .category-item.active .circle {
+            border-color: #6b4e3e;
+        }
+
+        .category-item .circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .category-item span {
+            font-size: 11px;
+            color: #4a3428;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* === قسم المنتجات السفلي === */
+        .products-container {
+            background-color: #cec1b6;
+            border-radius: 30px 30px 0 0;
+            padding: 25px 20px 40px 20px;
+            /* مسافة أعلى لتعويض القسم المثبت عند النقل للأقسام */
+            scroll-margin-top: 140px; 
+        }
+
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .view-toggle {
+            display: flex;
+            background: #bfaea0;
+            border-radius: 30px;
+            padding: 4px;
+            width: fit-content;
+        }
+
+        .toggle-btn {
+            background: #ffffff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 30px;
+            color: #4a3428;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .toggle-btn.inactive {
+            background: transparent;
+            color: #5a4033;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #2b1b12;
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        /* ✅ تنسيق قائمة المنتجات مع أقسام */
+        .product-group {
+            margin-bottom: 30px;
+            padding-top: 10px;
+            scroll-margin-top: 140px; /* نفس المسافة لضمان دقة النقل */
+        }
+        
+        .product-group-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4a3428;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            padding-bottom: 10px;
+        }
+
+        .product-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        .product-image-wrapper {
+            width: 110px;
+            height: 110px;
+            flex-shrink: 0;
+            background-color: #f2e7df;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        
+        .product-image-wrapper:hover {
+            transform: scale(1.02);
+        }
+
+        .product-image-wrapper img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+        }
+
+        .product-details {
+            flex-grow: 1;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2b1b12;
+        }
+
+        .product-desc {
+            font-size: 12px;
+            color: #5a4033;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-price {
+            align-self: flex-end;
+            background-color: #5c483d;
+            color: #ffffff;
+            padding: 5px 15px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* ✅ النافذة المنبثقة */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #fbf3ef;
+            width: 92%;
+            max-width: 500px;
+            border-radius: 24px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease-out forwards;
+            text-align: center;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #ffffff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #4a3428;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: background 0.2s;
+        }
+        .close-modal-btn:hover {
+            background: #e0d1c5;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+
+        .modal-content h2 {
+            font-size: 28px;
+            color: #2b1b12;
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            font-size: 16px;
+            color: #5a4033;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+        }
+
+        .modal-content .modal-price {
+            display: inline-block;
+            background-color: #5c483d;
+            color: #ffffff;
+            padding: 12px 35px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 22px;
+        }
+
+        @media (min-width: 601px) {
+            .app-container {
+                max-width: 700px;
+            }
+            
+            .product-image-wrapper {
+                width: 140px;
+                height: 140px;
+            }
+            
+            .product-name {
+                font-size: 22px;
+            }
+            
+            .product-desc {
+                font-size: 14px;
+            }
+            
+            .product-price {
+                font-size: 16px;
+                padding: 8px 20px;
+            }
+
+            .modal-content {
+                max-width: 600px;
+                padding: 40px;
+            }
+            
+            .modal-content img {
+                height: 350px;
+            }
+
+            .modal-content h2 {
+                font-size: 32px;
+            }
+            
+            .modal-content p {
+                font-size: 18px;
+            }
+            
+            .modal-content .modal-price {
+                font-size: 26px;
+                padding: 15px 40px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <div class="hero-section">
+            <div class="user-icon">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+
+        <div class="store-info">
+            <div class="logo-container">
+                <img src="image/2.jpeg" alt="Qashtiya Logo">
+            </div>
+            <h1>Qashtiya</h1>
+            
+            <div class="social-links">
+               <a href="https://wa.me/97431408684" target="_blank" title="واتساب">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="https://www.instagram.com/mww.2026/" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fas fa-share-alt"></i></a>
+            </div>
+        </div>
+
+        <!-- ✅ قسم الأصناف (مثبت في الأعلى دائماً) -->
+        <div class="categories-wrapper" id="stickyCategories">
+            <div class="categories-scroll">
+                <a href="#group-packs" class="category-item active">
+                    <div class="circle">
+                        <img src="image/3.jpeg" alt="بكس قشطيه">
+                    </div>
+                    <span>بكسات قشطيه</span>
+                </a>
+                <a href="#group-cheesecake" class="category-item">
+                    <div class="circle">
+                        <img src="image/6.jpeg" alt="شيز كيك">
+                    </div>
+                    <span>شيز كيك</span>
+                </a>
+                <a href="#group-mango" class="category-item">
+                    <div class="circle">
+                        <img src="image/7.jpeg" alt="حلى بارد">
+                    </div>
+                    <span>حلى بارد</span>
+                </a>
+                <a href="#group-pot" class="category-item">
+                    <div class="circle">
+                        <img src="image/8.jpeg" alt="قدر بسبوسه">
+                    </div>
+                    <span>قدر بسبوسه</span>
+                </a>
+                <a href="#group-makrma" class="category-item">
+                    <div class="circle">
+                        <img src="image/9.jpeg" alt="مكرمله">
+                    </div>
+                    <span>مكرمله</span>
+                </a>
+                <a href="#group-cinnamon" class="category-item">
+                    <div class="circle">
+                        <img src="image/10.jpeg" alt="سينامون رول">
+                    </div>
+                    <span>سينامون رول</span>
+                </a>
+                 <a href="#group-french" class="category-item">
+                    <div class="circle">
+                        <img src="image/11.jpeg" alt="فرنش توست">
+                    </div>
+                    <span>فرنش توست</span>
+                </a>
+                <a href="#group-date" class="category-item">
+                    <div class="circle">
+                        <img src="image/12.jpeg" alt="كيك التمر">
+                    </div>
+                    <span>كيك التمر</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="products-container">
+            
+            <div id="group-packs" class="product-group">
+                <h3 class="product-group-title">بكسات قشطيه</h3>
+                <div class="product-list">
+                    <div class="product-item" onclick="openModal('بكس قشطيه كبير', 'بسبوسه القشطه + معمول القشطه. مفروكه الفستق بالقشطه + كنافه بسبوسه القشطه + كنافه القشطه', 'QAR 109.00', 'image/3.jpeg')">
+                        <div class="product-image-wrapper">
+                            <img src="image/3.jpeg" alt="بكس قشطيه كبير">
+                        </div>
+                        <div class="product-details">
+                            <div class="product-name">بكس قشطيه كبير</div>
+                            <div class="product-desc">بسبوسه القشطه + معمول القشطه. مفروكه الفستق بالقشطه + كنافه بسبوسه القشطه + كنافه القشطه</div>
+                            <div class="product-price">QAR 109.00</div>
+                        </div>
+                    </div>
+
+                    <div class="product-item" onclick="openModal('بكس قشطيه وسط', 'بسبوسه القشطه + معمول القشطه. مفروكه الفستق بالقشطه + كنافه بسبوسه القشطه + كنافه القشطه', 'QAR 89.00', 'image/3.jpeg')">
+                        <div class="product-image-wrapper">
+                            <img src="image/3.jpeg" alt="بكس قشطيه وسط">
+                        </div>
+                        <div class="product-details">
+                            <div class="product-name">بكس قشطيه وسط</div>
+                            <div class="product-desc">بسبوسه القشطه + معمول القشطه. مفروكه الفستق بالقشطه + كنافه بسبوسه القشطه + كنافه القشطه</div>
+                            <div class="product-price">QAR 89.00</div>
+                        </div>
+                    </div>
+
+                    <div class="product-item" onclick="openModal('بكس قشطيه صغير', 'بسبوسه القشطه + معمول القشطه. مفروكه الفستق بالقشطه + كنافه بسبوسه القشطه + كنافه القشطه', 'QAR 69.00', 'image/3.jpeg')">
+                        <div class="product-image-wrapper">
+                            <img src="image/3.jpeg" alt="بكس قشطيه صغير">
+                        </div>
+                        <div class="product-details">
+                            <div class="product-name">بكس قشطيه صغير</div>
+                            <div class="product-desc">بسبوسه القشطه + معمول القشطه. مفروكه الفستق بالقشطه + كنافه بسبوسه القشطه + كنافه القشطه</div>
+                            <div class="product-price">QAR 69.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="group-cheesecake" class="product-group">
+                <h3 class="product-group-title">شيز كيك البسبوسه</h3>
+                <div class="product-list">
+                    <div class="product-item" onclick="openModal('شيز كيك البسبوسه بايركس', 'كريمه تشيز كيك في بايركس مع مكعبات البسبوسه مغطاة بطبقات من الكنافه والفتسق المكرمل', 'QAR 139.00', 'image/6.jpeg')">
+                        <div class="product-image-wrapper">
+                            <img src="image/6.jpeg" alt="شيز كيك البسبوسه بايركس">
+                        </div>
+                        <div class="product-details">
+                            <div class="product-name">شيز كيك البسبوسه بايركس</div>
+                            <div class="product-desc">كريمه تشيز كيك في بايركس مع مكعبات البسبوسه مغطاة بطبقات من الكنافه والفتسق المكرمل</div>
+                            <div class="product-price">QAR 139.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="group-mango" class="product-group">
+                <h3 class="product-group-title">حلى بارد</h3>
+                <div class="product-list">
+                    <div class="product-item" onclick="openModal('حلى بارد المانجو', 'حلى مانجو بارد يقدم في علب فرديه بطبقات كريميه وبيوريه مانجو طازج تجربه استوائيه منعشه', 'QAR 99.00', 'image/7.jpeg')">
+                        <div class="product-image-wrapper">
+                            <img src="image/7.jpeg" alt="حلى بارد المانجو">
+                        </div>
+                        <div class="product-details">
+                            <div class="product-name">حلى بارد المانجو</div>
+                            <div class="product-desc">حلى مانجو بارد يقدم في علب فرديه بطبقات كريميه وبيوريه مانجو طازج تجربه استوائيه منعشه</div>
+                            <div class="product-price">QAR 99.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="group-pot" class="product-group">
+                <h3 class="product-group-title">قدر بسبوسه</h3>
+                <div class="product-list">
+                    <div class="product-item" onclick="openModal('قدر بسبوسه', 'كيك سميد تقليدي مشبع بالقطر يقدم في وعاء مع طبقه قشطه كريميه حلى غني وفاخر', 'QAR 109.00', 'image/8.jpeg')">
+                        <div class="product-image-wrapper">
+                            <img src="image/8.jpeg" alt="قدر بسبوسه">
+                        </div>
+                        <div class="product-details">
+                            <div class="product-name">قدر بسبوسه</div>
+                            <div class="product-desc">كيك سميد تقليدي مشبع بالقطر يقدم في وعاء مع طبقه قشطه كريميه حلى غني وفاخر</div>
+                            <div class="product-price">QAR 109.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="group-makrma" class="product-group">
+                <h3 class="product-group-title">مكرمله</h3>
+                <div class="product-list">
+                    <div class="product-item" onclick="openModal('مكرمله', 'عجينه سميد محشوة بجبن كيري مغطاه بالكراميل\nنوعين:\n- كراميل القرفه\n- كراميل العادي', 'QAR 79.00', 'image/9.jpeg')">
+                        <div class="product-image-wrapper">
+                            <img src="image/9.jpeg" alt="مكرمله">
+                        </div>
+                        <div class="product-details">
+                            <div class="product-name">مكرمله</div>
+                            <div class="product-desc">عجينه سميد محشوة بجبن كيري مغطاه بالكراميل (نوعين: كراميل القرفه أو كراميل العادي)</div>
+                            <div class="product-price">QAR 79.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="group-cinnamon" class="product-group">
+                <h3 class="product-group-title">سينامون رول</h3>
+                <div class="product-list">
+                    <div class="product-item" onclick="openModal('سينامون رول', 'رولات قرفه مخبوزه مع صلصه كراميل مملحه', 'QAR 59.00', 'image/10.jpeg')">
+                        <div class="product-image-wrapper">
+                            <img src="image/10.jpeg" alt="سينامون رول">
+                        </div>
+                        <div class="product-details">
+                            <div class="product-name">سينامون رول</div>
+                            <div class="product-desc">رولات قرفه مخبوزه مع صلصه كراميل مملحه</div>
+                            <div class="product-price">QAR 59.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="group-french" class="product-group">
+                <h3 class="product-group-title">فرنش توست البروليه</h3>
+                <div class="product-list">
+                    <div class="product-item" onclick="openModal('فرنش توست البروليه', 'رولات قرفه مخبوزه محشوه بالجبن الكريمي', 'QAR 79.00', 'image/11.jpeg')">
+                        <div class="product-image-wrapper">
+                            <img src="image/11.jpeg" alt="فرنش توست البروليه">
+                        </div>
+                        <div class="product-details">
+                            <div class="product-name">فرنش توست البروليه</div>
+                            <div class="product-desc">رولات قرفه مخبوزه محشوه بالجبن الكريمي</div>
+                            <div class="product-price">QAR 79.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="group-date" class="product-group">
+                <h3 class="product-group-title">كيك التمر</h3>
+                <div class="product-list">
+                    <div class="product-item" onclick="openModal('كيك التمر', 'كيكه التمر مع القشطه والتوفي المملح', 'QAR 129.00', 'image/12.jpeg')">
+                        <div class="product-image-wrapper">
+                            <img src="image/12.jpeg" alt="كيك التمر">
+                        </div>
+                        <div class="product-details">
+                            <div class="product-name">كيك التمر</div>
+                            <div class="product-desc">كيكه التمر مع القشطه والتوفي المملح</div>
+                            <div class="product-price">QAR 129.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ✅ نافذة التفاصيل المنبثقة -->
+    <div class="modal-overlay" id="productModal" onclick="closeModalOutside(event)">
+        <div class="modal-content">
+            <button class="close-modal-btn" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <img id="modalImage" src="" alt="Product Image">
+            <h2 id="modalTitle">اسم المنتج</h2>
+            <p id="modalDesc">وصف المنتج هنا...</p>
+            <div class="modal-price" id="modalPrice">QAR 0.00</div>
+        </div>
+    </div>
+
+    <!-- ✅ كود JavaScript للتفاعل -->
+    <script>
+        // دالة لفتح النافذة وتعبئتها بالبيانات
+        function openModal(title, desc, price, imgSrc) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalDesc').innerText = desc;
+            document.getElementById('modalPrice').innerText = price;
+            document.getElementById('modalImage').src = imgSrc;
+            
+            document.getElementById('productModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeModalOutside(event) {
+            if (event.target === document.getElementById('productModal')) {
+                closeModal();
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // ✅ كود تمييز القسم النشط عند التمرير (Scroll Spy)
+        document.addEventListener("scroll", function() {
+            const categories = document.querySelectorAll('.category-item');
+            const groups = document.querySelectorAll('.product-group');
+            let currentGroupId = "";
+
+            groups.forEach(group => {
+                const sectionTop = group.offsetTop - 200; // مراعاة ارتفاع القسم المثبت
+                if (window.scrollY >= sectionTop) {
+                    currentGroupId = group.getAttribute("id");
+                }
+            });
+
+            categories.forEach(cat => {
+                cat.classList.remove("active");
+                if (cat.getAttribute("href") === "#" + currentGroupId) {
+                    cat.classList.add("active");
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
